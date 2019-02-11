@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--Summons the module to give the <html> element and all of its children access to the module-->
 <html lang="en" ng-app="todoApp">
 <head>
     <meta charset="UTF-8">
@@ -6,29 +7,39 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Angular Lab</title>
     <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
+
 <body>
-    
+    <!--$ctrl is a reference to the ToDoController object-->
+    <!--ngController is allowing this section and all children of this section to use the properties/methods of the ToDoController-->
     <section ng-controller="ToDoController as $ctrl">
         <p class="title">TODO List</p>
         <p class="subtitle">A place to store the things you have to do!</p>
-        <input type="text" placeholder="Filter your to-dos">
+        <!--ng-Models are representing the strings that the user enters into the inputs. They are properties of an object-->
+        <input type="text" ng-model="searchText" placeholder="Filter your to-dos">
         <ol>
-            
-            <li ng-repeat="todo in $ctrl.tasks">
-                <button ng-if="!todo.completed">Complete</button>
+        <!--ngRepeat directive is creating a new <div> for every element in the $ctrl.tasks array -->
+        <!--filter searches the array based on the text entered-->
+            <li class="first" ng-repeat="todo in $ctrl.tasks | filter: searchText">
+                <button class="complete_btn" ng-click="$ctrl.completed($index)"ng-if="!todo.completed == false">Complete</button>
                 <p ng-class="{completed: todo.completed}">{{ todo.task }}</p>
-                <a href="Assets\baseline_clear_black_18dp.png">X</a>
+        <!--when you click the X, delete the task from the $ctrl.tasks by using $index-->
+        <!-- $index is the index that the object is at in the array-->
+                <i class="material-icons" ng-click="$ctrl.remove($index)">clear</i>
             </li>
-            
         </ol>
-            <input type="text" placeholder="Add your to do">
-        <button class="addbtn">Add</button>
+        <!--ngSubmit calls the $ctrl.add method (the method in the controller) and the argument is an object called $ctrl.newTasks (which comes from the ngModels on the inputs-->
+        <form ng-submit="$ctrl.add($ctrl.newTasks);">
+            <input ng-model="$ctrl.newTasks.task" type="text" placeholder="Add your to do">
+            <!--ngDisabled is disabling the form from being submitted until $ctrl.newTask is truthy-->
+            <button class="addbtn" ng-disabled="!$ctrl.newTasks">Add</button>
+        </form>
     </section>
-    
-    
+
     <script src="https://code.angularjs.org/1.6.5/angular.js"></script>
     <script src="app.module.js"></script>
     <script src="app.controller.js"></script>
 </body>
+
 </html>

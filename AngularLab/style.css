@@ -56,7 +56,15 @@ button {
 .completed {
     text-decoration: line-through;
 }
+
 p {
     display: inline-block;
     font-size: 22px;
 }
+
+.material-icons {
+
+
+}
+
+
